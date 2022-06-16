@@ -1,13 +1,13 @@
 [features]
 seeds = false
-[programs.localnet]
-pzportal = "Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS"
+[programs.devnet]
+pzportal = "CYAiXdNguaSdW43pQNqcmdHQiUbFNfteGCAiSre7NTJo"
 
 [registry]
 url = "https://anchor.projectserum.com"
 
 [provider]
-cluster = "localnet"
+cluster = "devnet"
 wallet = "/Users/kipland/.config/solana/id.json"
 
 [scripts]

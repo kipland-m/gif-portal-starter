@@ -118,6 +118,8 @@ const App = () => {
   const getProvider = () => {
     const connection = new Connection(network, opts.preflightCommitment);
     const provider = new Provider(
+      /* getProvider is a way of creating a secure connection to Solana
+      which is why it is utilizing the window.solana object */
       connection, window.solana, opts.preflightCommitment,
     );
     return provider;
@@ -183,11 +185,25 @@ const App = () => {
     return () => window.removeEventListener('load', onLoad);
   }, []);
 
+  const getMsgList = async() => {
+    try {
+      const provider = getProvider();
+      const program = new Program(idl, programID, provider);
+      const account = await program.account.baseAccount.fetch(baseAccount.publicKey);
+      
+      console.log("Got the account", account)
+      setMsgList(account.msgList)
+  
+    } catch (error) {
+      console.log("Error in getMsgList: ", error)
+      setMsgList(null);
+    }
+  }
+
   useEffect(() => {
     if (walletAddress) {
       console.log("Fetching messages..")
-
-      setMsgList(TEST_MSGs);
+      getMsgList()
     }
   }, [walletAddress]);
 

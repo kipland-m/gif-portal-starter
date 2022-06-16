@@ -24,14 +24,17 @@ const main = async() => {
   let account = await program.account.baseAccount.fetch(baseAccount.publicKey);
   console.log('👀 Message Count', account.totalMsgs.toString())
 
-  await program.rpc.addMsg({
+  await program.rpc.addMsg("This is sample txt!", {
     accounts: {
       baseAccount: baseAccount.publicKey,
+      user: provider.wallet.publicKey,
     },
   });
 
   account = await program.account.baseAccount.fetch(baseAccount.publicKey);
   console.log('👀 Message Count', account.totalMsgs.toString())
+
+  console.log('👀 Message List', account.msgList)
 }
 
 

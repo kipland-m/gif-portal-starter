@@ -1,7 +1,7 @@
 // lets us use anchor, like an import
 use anchor_lang::prelude::*;
 
-declare_id!("Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS");
+declare_id!("CYAiXdNguaSdW43pQNqcmdHQiUbFNfteGCAiSre7NTJo");
 
 // Declaring a module with #[]
 #[program]
@@ -55,7 +55,7 @@ pub struct AddMsg<'info> {
 // Define ItemStruct struct which will be a struct that contains the message content
 // and the user that submitted that messages' public key.
 #[derive(Debug, Clone, AnchorSerialize, AnchorDeserialize)]
-pub stuct ItemStruct {
+pub struct ItemStruct {
     pub msg_content: String,
     pub user_address: Pubkey,
 }
