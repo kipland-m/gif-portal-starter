@@ -125,6 +125,27 @@ const App = () => {
     return provider;
   }
 
+  const createMsgAccount = async () => {
+    try{
+      const provider = getProvider();
+      const program = new Program(idl, programID, provider);
+      console.log('ping')
+
+      await program.rpc.startStuffOff({
+        accounts: {
+          baseAccount: baseAccount.publicKey,
+          user: provider.wallet.publicKey,
+          systemProgram: SystemProgram.programId,
+        },
+        signers: [baseAccount]
+      });
+      console.log('Created new BaseAccount with address:', baseAccount.publicKey.toString())
+      await getMsgList();
+    } catch(error) {
+      console.log('Error creating BaseAccount account:', error)
+    }
+  }
+
     /* React function that just returns some HTML.
     * This HTML is the connect to wallet button, that it's onClick effect is to run the connectWallet
     * function above.
