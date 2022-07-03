@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react';
 import twitterLogo from './assets/twitter-logo.svg';
 import './App.css';
 import idl from './idl.json';
+import kp from './keypair.json'
 import { Connection, PublicKey, clusterApiUrl } from '@solana/web3.js';
 import { Program, Provider, web3 } from '@project-serum/anchor';
 
@@ -10,7 +11,11 @@ import { Program, Provider, web3 } from '@project-serum/anchor';
 const { SystemProgram, Keypair } = web3;
 
 // Create a keypair for the account that will hold the GIF data.
-let baseAccount = Keypair.generate();
+// Logic for keypair generation needs to be changed in order for user
+// not to be prompted for new account upon refresh
+const arr = Object.values(kp._keypair.secretKey)
+const secret = new Uint8Array(arr)
+const baseAccount = web3.Keypair.fromSecretKey(secret)
 
 // Get our program's id from the IDL file.
 const programID = new PublicKey(idl.metadata.address);
