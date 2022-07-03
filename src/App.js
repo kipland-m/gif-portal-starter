@@ -95,13 +95,30 @@ const App = () => {
   };
 
   const sendMsg = async () => {
-    if (inputValue.length > 0) {
-      console.log("Given message:", inputValue)
-      setMsgList([...msgList, inputValue])
-      setInputValue('')
-    } else {
+    if (inputValue.length === 0) {
       console.log("No input was given, try again.")
+      return
     }
+    setInputValue('');
+    console.log('MSG Contents: ', inputValue);
+
+    try {
+      const provider = getProvider();
+      const program = new Program(idl, programID, provider);
+
+      await program.rpc.addMsg(inputValue, {
+        accounts: {
+          baseAccount: baseAccount.publicKey,
+          user: provider.wallet.publicKey,
+        },  
+      });
+      console.log('MSG successfully sent to program ', inputValue)
+      
+      await getMsgList();
+    } catch (error) {
+      console.log('Error sending gif', error)
+    }
+    
 
 
   };
@@ -143,7 +160,7 @@ const App = () => {
       await getMsgList();
     } catch(error) {
       console.log('Error creating BaseAccount account:', error)
-    }
+    } 
   }
 
     /* React function that just returns some HTML.
@@ -168,30 +185,50 @@ const App = () => {
   );
 
 
-  const renderConnectedContainer = () => (
-    <div className="connected-container">
-      {/* input box goes here! */}
-      <form onSubmit={(event) => {
-        event.preventDefault();
-        sendMsg();
-      }}>
-        <input type="text" 
-        placeholder='enter a message'
-        value={inputValue}
-        onChange={onInputChange}
+  const renderConnectedContainer = () => {
+    if (msgList === null) {
+      return (
+        <div className='connected-container'>
+          <button className='cta-button submit-gif-button' onClick={createMsgAccount}>
+            Do One-Time initialization for MSG Program Account
+          </button>
+        </div>
+      )
+    }
+
+      else{
+    return(
+        <div className="connected-container">
+
+        {/* input box goes here! */}
+        <form onSubmit={(event) => {
+          event.preventDefault();
+          sendMsg();
+        }}>
+
+        <input 
+          type="text" 
+          placeholder='enter a message'
+          value={inputValue}
+          onChange={onInputChange}
         />
-        <button type="submit" className='cta-button submit-msg-button'>submit</button>
+        <button type="submit" className='cta-button submit-msg-button'>
+          submit
+        </button>
+        
 
       </form>
       <div className="msg-grid">
-        {msgList.map(msg => (
-          <div className="msg-item" key={msg}>
-            <li>{msg}</li>
+        {msgList.map((item, index ) => (
+          <div className="msg-item" key={index}>
+            <li>{item.msgContent}</li>
           </div>
         ))}
       </div>
     </div>
-  );
+    )
+  }
+}
   
 
   /*
