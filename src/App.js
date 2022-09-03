@@ -8,7 +8,7 @@ import { Connection, PublicKey, clusterApiUrl } from '@solana/web3.js';
 import { Program, Provider, web3 } from '@project-serum/anchor';
 
 // SystemProgram is a reference to the Solana runtime!
-const { SystemProgram, Keypair } = web3;
+const { SystemProgram } = web3;
 
 // Create a keypair for the account that will hold the GIF data.
 // Logic for keypair generation needs to be changed in order for user
@@ -32,13 +32,6 @@ const opts = {
 const TWITTER_HANDLE = 'kiplandvaughn';
 const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
 
-
-const TEST_MSGs = [
-  'Hey this is a test',
-  'Test number 2',
-  'eat your toothpaste',
-  'also meat too'
-]
 
 const App = () => {
   /*
