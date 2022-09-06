@@ -241,24 +241,25 @@ const App = () => {
     return () => window.removeEventListener('load', onLoad);
   }, []);
 
-  const getMsgList = async() => {
-    try {
-      const provider = getProvider();
-      const program = new Program(idl, programID, provider);
-      const account = await program.account.baseAccount.fetch(baseAccount.publicKey);
-      
-      console.log("Got the account", account)
-      setMsgList(account.msgList)
-  
-    } catch (error) {
-      console.log("Error in getMsgList: ", error)
-      setMsgList(null);
-    }
-  }
 
   useEffect(() => {
+    const getMsgList = async() => {
+      try {
+        const provider = getProvider();
+        const program = new Program(idl, programID, provider);
+        const account = await program.account.baseAccount.fetch(baseAccount.publicKey);
+        
+        console.log("Got the account", account)
+        setMsgList(account.msgList)
+    
+      } catch (error) {
+        console.log("Error in getMsgList: ", error)
+        setMsgList(null);
+      }
+    }
+
     if (walletAddress) {
-      console.log("Fetching messages..")
+      console.log("Fetching messages..");
       getMsgList()
     }
   }, [walletAddress]);
