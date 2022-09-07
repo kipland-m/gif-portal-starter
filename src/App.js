@@ -1,5 +1,5 @@
 
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import twitterLogo from './assets/twitter-logo.svg';
 import './App.css';
 import idl from './idl.json';
@@ -241,7 +241,7 @@ const App = () => {
     return () => window.removeEventListener('load', onLoad);
   }, []);
 
-  const getMsgList = async() => {
+  const getMsgList = useCallback (async() => {
     try {
       const provider = getProvider();
       const program = new Program(idl, programID, provider);
@@ -255,13 +255,14 @@ const App = () => {
       setMsgList(null);
     }
   }
+  ,[]);
 
   useEffect(() => {
     if (walletAddress) {
       console.log("Fetching messages..");
       getMsgList()
     }
-  }, [walletAddress]);
+  }, [walletAddress,getMsgList]);
 
 
   return (
